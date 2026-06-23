@@ -37,7 +37,7 @@ export async function updateDocumentService(
   const user = await getCurrentUser();
   if (user == null) throw new Error("Unauthenticated");
 
-  //   PERMISSION
+  //   PERMISSION:
   if (user.role === "viewer") {
     return new AuthorizationError();
   }
@@ -55,7 +55,7 @@ export async function deleteDocumentService(documentId: string) {
   const user = await getCurrentUser();
   if (user == null) throw new Error("Unauthenticated");
 
-  //   PERMISSION
+  //   PERMISSION:
   if (user.role !== "admin") {
     return new AuthorizationError();
   }
