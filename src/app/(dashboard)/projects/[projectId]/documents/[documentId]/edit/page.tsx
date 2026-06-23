@@ -1,37 +1,37 @@
-import Link from "next/link"
-import { notFound, redirect } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { ArrowLeftIcon } from "lucide-react"
-import { getProjectById } from "@/dal/projects/queries"
-import { getDocumentById } from "@/dal/documents/queries"
-import { DocumentForm } from "@/components/document-form"
-import { getCurrentUser } from "@/lib/session"
+import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { ArrowLeftIcon } from "lucide-react";
+import { getProjectById } from "@/dal/projects/queries";
+import { DocumentForm } from "@/components/document-form";
+import { getCurrentUser } from "@/lib/session";
+import { getDocumentByIdService } from "@/services/document";
 
 export default async function EditDocumentPage({
   params,
 }: PageProps<"/projects/[projectId]/documents/[documentId]/edit">) {
-  const { projectId, documentId } = await params
+  const { projectId, documentId } = await params;
 
-  const document = await getDocumentById(documentId)
-  if (document == null) return notFound()
+  const document = await getDocumentByIdService(documentId);
+  if (document == null) return notFound();
 
-  const project = await getProjectById(projectId)
-  if (project == null) return notFound()
+  const project = await getProjectById(projectId);
+  if (project == null) return notFound();
 
   // PERMISSION:
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
   if (
     user == null ||
     (user.role !== "admin" &&
       project.department != null &&
       user.department !== project.department)
   ) {
-    return redirect(`/`)
+    return redirect(`/`);
   }
 
   // PERMISSION:
   if (user.role === "viewer") {
-    return redirect(`/`)
+    return redirect(`/`);
   }
 
   return (
@@ -53,5 +53,5 @@ export default async function EditDocumentPage({
         <DocumentForm document={document} projectId={projectId} />
       </div>
     </div>
-  )
+  );
 }
