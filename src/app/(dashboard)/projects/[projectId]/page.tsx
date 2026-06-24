@@ -13,6 +13,8 @@ import { PlusIcon, LockIcon, FileTextIcon } from "lucide-react";
 import { getStatusBadgeVariant } from "@/lib/helpers";
 import { getProjectDocumentsService } from "@/services/document";
 import { getProjectByIdService } from "@/services/projects";
+import { getCurrentUser } from "@/lib/session";
+import { can } from "@/permissions/rbac";
 
 export default async function ProjectDocumentsPage({
   params,
@@ -20,6 +22,8 @@ export default async function ProjectDocumentsPage({
   const { projectId } = await params;
   const project = await getProjectByIdService(projectId);
   if (project == null) return notFound();
+
+  const user = await getCurrentUser();
 
   // PERMISSION:
   // const user = await getCurrentUser();
@@ -45,13 +49,13 @@ export default async function ProjectDocumentsPage({
         </div>
         <div className="flex gap-2">
           {/* PERMISSION: */}
-          {user?.role === "admin" && (
+          {can(user, "project:update") && (
             <Button asChild variant="outline">
               <Link href={`/projects/${projectId}/edit`}>Edit Project</Link>
             </Button>
           )}
           {/* PERMISSION: */}
-          {(user?.role === "author" || user?.role === "admin") && (
+          {can(user, "document:create") && (
             <Button asChild>
               <Link href={`/projects/${projectId}/documents/new`}>
                 <PlusIcon className="size-4" />
@@ -71,7 +75,7 @@ export default async function ProjectDocumentsPage({
               Create your first document in this project.
             </p>
             {/* PERMISSION: */}
-            {(user?.role === "author" || user?.role === "admin") && (
+            {can(user, "document:create") && (
               <Button asChild>
                 <Link href={`/projects/${projectId}/documents/new`}>
                   <PlusIcon className="size-4 mr-2" />
