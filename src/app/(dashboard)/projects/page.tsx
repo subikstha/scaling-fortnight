@@ -1,11 +1,11 @@
-import { redirect } from "next/navigation"
-import { getAllProjects } from "@/dal/projects/queries"
+import { redirect } from "next/navigation";
+import { getAllProjectsService } from "@/services/projects";
 
 export default async function ProjectsPage() {
-  const projects = await getAllProjects()
+  const projects = await getAllProjectsService();
 
   if (projects.length > 0) {
-    redirect(`/projects/${projects[0].id}`)
+    redirect(`/projects/${projects[0].id}`);
   }
 
   return (
@@ -13,5 +13,5 @@ export default async function ProjectsPage() {
       <h1 className="text-2xl font-bold">No Projects</h1>
       <p className="text-muted-foreground">Create a project to get started.</p>
     </div>
-  )
+  );
 }

@@ -1,24 +1,24 @@
-import { redirect } from "next/navigation"
-import { getCurrentUser } from "@/lib/session"
+import { redirect } from "next/navigation";
+import { getCurrentUser } from "@/lib/session";
 import {
   SidebarProvider,
   SidebarInset,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { AppSidebar } from "@/components/app-sidebar"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
-import { LogOutIcon } from "lucide-react"
-import { logout } from "@/actions/auth"
-import { ActionButton } from "@/components/ui/action-button"
-import { getRoleBadgeVariant } from "@/lib/helpers"
-import { getAllProjects } from "@/dal/projects/queries"
+} from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { LogOutIcon } from "lucide-react";
+import { logout } from "@/actions/auth";
+import { ActionButton } from "@/components/ui/action-button";
+import { getRoleBadgeVariant } from "@/lib/helpers";
+import { getAllProjectsService } from "@/services/projects";
 
 export default async function DashboardLayout({ children }: LayoutProps<"/">) {
-  const user = await getCurrentUser()
-  if (user == null) redirect("/")
+  const user = await getCurrentUser();
+  if (user == null) redirect("/");
 
-  const projects = await getAllProjects({ ordered: true })
+  const projects = await getAllProjectsService({ ordered: true });
 
   return (
     <SidebarProvider>
@@ -48,5 +48,5 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
         <div className="flex-1 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }
