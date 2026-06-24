@@ -17,7 +17,7 @@ export async function createProjectService(data: ProjectFormValues) {
   if (user == null) throw new Error("Unauthenticated");
 
   //   PERMISSION:
-  if (user.role !== "admin") {
+  if (!can(user, "project:create")) {
     return new AuthorizationError();
   }
 

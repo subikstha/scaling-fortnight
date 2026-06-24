@@ -50,7 +50,7 @@ export default async function DocumentDetailPage({
         </div>
         <div className="flex gap-2">
           {/* PERMISSION: */}
-          {can(user, "project:update") && (
+          {can(user, "document:update") && (
             <Button variant="outline" asChild>
               <Link
                 href={`/projects/${projectId}/documents/${documentId}/edit`}

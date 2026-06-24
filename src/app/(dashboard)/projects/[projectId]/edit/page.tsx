@@ -26,7 +26,7 @@ export default async function EditProjectPage({
 
   // PERMISSION:
   const user = await getCurrentUser();
-  if (user == null || user.role !== "admin") {
+  if (!can(user, "project:update")) {
     return redirect(`/`);
   }
 
